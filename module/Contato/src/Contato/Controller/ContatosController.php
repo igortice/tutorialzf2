@@ -29,12 +29,16 @@ class ContatosController extends AbstractActionController
     // GET /contatos/novo
     public function novoAction()
     {
+        $this->menos30Contatos();
+        
         return array('formContato' => new ContatoForm());
     }
 
     // POST /contatos/adicionar
     public function adicionarAction()
     {
+        $this->menos30Contatos();
+        
         // obtém a requisição
         $request = $this->getRequest();
 
@@ -221,6 +225,17 @@ class ContatosController extends AbstractActionController
 
         // return vairavel de classe com service ModelContato
         return $this->contatoTable;
+    }
+    
+    private function menos30Contatos()
+    {
+        $qe = $this->getContatoTable()->count();
+        if ($qe >= 30) {
+            $this->flashMessenger()
+                    ->addErrorMessage('<h4>Atenção!</h4>Por questões de perfomance, para essa parte do tutorial, só é possível adicionar 30 elemetos no máximo.');
+            
+            return $this->redirect()->toRoute('contatos');
+        }
     }
 
 }

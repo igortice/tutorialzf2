@@ -106,4 +106,14 @@ class ContatoTable
     {
         $this->tableGateway->delete(array('id' => (int) $id));
     }
+    
+    /**
+     * Contabilizar os elementos da tabela contatos
+     * 
+     * @return int
+     */
+    public function count()
+    {
+        return $this->tableGateway->select()->count();
+    }
 }
